@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager sharedInstance = null;
     public SpawnPoint playerSpawnPoint;
+    public CameraManager cameraManager;
 
     void Awake()
     {
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
         if (playerSpawnPoint != null)
         {
             GameObject player = playerSpawnPoint.SpawnObject();
+            cameraManager.virtualCamera.Follow = player.transform;
         }
     }
 }
