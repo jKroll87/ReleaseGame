@@ -5,20 +5,26 @@ using UnityEngine.UI;
 
 public class Player : Character
 {
-    public int bullets;
     public Image hpImage;
     public Text hpText;
+    public int bullets;
+    public int maxBullets;
+    public Image bulletFillImage;
+    public Text bulletText;
 
     void Start()
     {
-        bullets = 0;
         hpImage = GameObject.Find("Hp").GetComponent<Image>();
         hpText = GameObject.Find("HpText").GetComponent<Text>();
+
+        bulletFillImage = GameObject.Find("BulletFillImage").GetComponent<Image>();
+        bulletText = GameObject.Find("BulletText").GetComponent<Text>();
     }
 
     void FixedUpdate()
     {
         setHealthBar();
+        setBulletBar();
     }
 
     void OnTriggerEnter(Collider collision)
@@ -26,7 +32,6 @@ public class Player : Character
         if (collision.gameObject.CompareTag("BulletBundle"))
         {
             bullets += 5;
-            Debug.Log("You have " + bullets + " bullets.");
             collision.gameObject.SetActive(false);
         }
     }
@@ -35,5 +40,11 @@ public class Player : Character
     {
         hpImage.fillAmount = (float)hitPoints / maxHitPoints;
         hpText.text = "HP:" + (hpImage.fillAmount * maxHitPoints);
+    }
+
+    void setBulletBar()
+    {
+        bulletFillImage.fillAmount = (float)bullets / maxBullets;
+        bulletText.text = bullets + "/" + maxBullets;
     }
 }
