@@ -20,6 +20,10 @@ public class Player : Character
         bulletFillImage = GameObject.Find("BulletFillImage").GetComponent<Image>();
         bulletText = GameObject.Find("BulletText").GetComponent<Text>();
     }
+    private void OnEnable()
+    {
+        ResetCharacter();
+    }
 
     void FixedUpdate()
     {
@@ -46,5 +50,29 @@ public class Player : Character
     {
         bulletFillImage.fillAmount = (float)bullets / maxBullets;
         bulletText.text = bullets + "/" + maxBullets;
+    }
+
+    public override IEnumerator DamageCharacter(int damage, float interval)
+    {
+        while (true)
+        {
+            hitPoints = hitPoints - damage;
+
+            if (hitPoints <= 0)
+            {
+                setHealthBar();
+                KillCharacter();
+                break;
+            }
+
+            if (interval > float.Epsilon)
+            {
+                yield return new WaitForSeconds(interval);
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 }
